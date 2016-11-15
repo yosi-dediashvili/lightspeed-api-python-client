@@ -13,8 +13,8 @@ for category in api.leaf_categories().get('Category'):
     products = api.list_products(category['categoryID'])
     print(
         "Products under category `{NAME}`: {COUNT}".format(
-            category['name'],
-            len(products)
+            NAME=category['name'],
+            COUNT=len(products)
         )
     )
 ```
