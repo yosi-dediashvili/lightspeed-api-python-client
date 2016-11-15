@@ -1,4 +1,5 @@
-import config
+import constants
+
 import json
 import requests
 import logging
@@ -24,24 +25,25 @@ class LightspeedAPIRequestError(LightspeedAPIException):
         super(LightspeedAPIRequestError, self).__init__(message)
 
 
-class LightSpeedApi:
+class LightpeedAPI:
     """
     Lightspeed api client
     """
 
-    def __init__(self, url=None, apikey=None, account_id=None):
-        self.APIKEY = apikey or config.APIKEY
-        self.ACCOUNT_ID = account_id or config.ACCOUNT_ID
-        self.URL = url or config.URL.format(APIKEY=self.APIKEY, ACCOUNT_ID=self.ACCOUNT_ID)
-        self.MAX_RETRIES = config.MAX_RETRIES
+    def __init__(self, auth_token, account_id, log_level=logging.DEBUG):
+        self.ACCOUNT_ID = account_id
+        self.AUTH_TOKEN = auth_token
+        self.URL = constants.BASE_URL.format(ACCOUNT_ID=account_id)
+        self.MAX_RETRIES = constants.MAX_RETRIES
+        self.HEADER = {"Authorization": "Bearer {}".format(self.AUTH_TOKEN)}
         self.retry_count = 0
-        if config.DEBUG:
-            logging.basicConfig(level=logging.DEBUG)
+
+        logging.basicConfig(level=log_level)
 
     def _create_request(self, action, url=None, **kwargs):
         datas = {}
         datas.update(kwargs)
-        req_url = url or config.URL_MAP.get(action, '/')
+        req_url = url or constants.URL_MAP.get(action, '/')
         request_url = self._get_url(req_url)
         return request_url, datas
 
@@ -68,7 +70,8 @@ class LightSpeedApi:
         try:
             req = requests.get(
                 request_url,
-                params=datas)
+                params=datas,
+                headers=self.HEADER)
             content = req.content
             logging.debug(content)
         except requests.exceptions.RequestException as e:
@@ -181,7 +184,9 @@ class LightSpeedApi:
         try:
             req = requests.post(
                 request_url,
-                params=datas, json=post_json)
+                params=datas,
+                json=post_json,
+                headers=self.HEADER)
             content = req.json()
             logging.debug(content)
         except requests.exceptions.RequestException as e:
@@ -211,7 +216,9 @@ class LightSpeedApi:
         try:
             req = requests.put(
                 request_url,
-                params=datas, json=json.loads(post_json))
+                params=datas,
+                json=json.loads(post_json),
+                headers=self.HEADER)
             content = req.json()
             logging.debug(content)
         except requests.exceptions.RequestException as e:
@@ -263,7 +270,9 @@ class LightSpeedApi:
         try:
             req = requests.post(
                 request_url,
-                params=datas, data=post_xml)
+                params=datas,
+                data=post_xml,
+                headers=self.HEADER)
         except requests.exceptions.RequestException as e:
             """ API not available """
             raise LightspeedAPIUnavailable(self.URL, str(e))
