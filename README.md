@@ -10,7 +10,7 @@ api = LightspeedAPI("YOUR_OAUTH_TOKEN")
 # Get product details
 
 for category in api.leaf_categories().get('Category'):
-    products = api.list_products(category['categoryID'])
+    products = api.list_products(category['categoryID']).get('Item')
     print(
         "Products under category `{NAME}`: {COUNT}".format(
             NAME=category['name'],

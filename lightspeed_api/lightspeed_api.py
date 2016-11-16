@@ -325,6 +325,13 @@ class LightspeedAPI:
         leaf_categories = self.request(action='category', **querystring)
         return leaf_categories if 'Category' in leaf_categories else None
 
+    def categories(self):
+        """
+        :return: All of the categories in lightspeed.
+        """
+        categories = self.request(action='category')
+        return categories if 'Category' in categories else None
+
     def manufacturers(self, offset=0):
         """
 
