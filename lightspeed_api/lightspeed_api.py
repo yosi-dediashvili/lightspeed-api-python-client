@@ -37,7 +37,7 @@ class LightspeedAPI:
         self.AUTH_TOKEN = auth_token
         self.HEADER = {"Authorization": "Bearer {}".format(self.AUTH_TOKEN)}
         self.ACCOUNT_ID = self.get_account().get('accountID')
-        self.URL = constants.BASE_URL.format(ACCOUNT_ID=account_id)
+        self.URL = constants.BASE_URL.format(ACCOUNT_ID=self.ACCOUNT_ID)
 
         logging.basicConfig(level=log_level)
 
