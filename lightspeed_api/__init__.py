@@ -1,1 +1,1 @@
-from lightspeed_api import LightpeedAPI
+from lightspeed_api import LightspeedAPI

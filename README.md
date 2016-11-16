@@ -6,7 +6,7 @@ The Lightspeed API Client for Python is a client library for accessing Lightspee
 
 ```python
 from lightspeed_api import LightspeedAPI
-api = LightspeedAPI("YOUR_OAUTH_TOKEN", "YOUR_ACCOUNT_ID")
+api = LightspeedAPI("YOUR_OAUTH_TOKEN")
 # Get product details
 
 for category in api.leaf_categories().get('Category'):

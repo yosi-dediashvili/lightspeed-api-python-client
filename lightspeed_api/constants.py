@@ -1,6 +1,9 @@
 """
 Lightspeed SDK Configuration
 """
+
+ACCOUNT_URL = "https://api.merchantos.com/API/Account.json"
+
 BASE_URL = "https://api.merchantos.com/API/Account/{ACCOUNT_ID}/"
 MAX_RETRIES = 5
 DEBUG = False

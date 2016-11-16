@@ -25,20 +25,24 @@ class LightspeedAPIRequestError(LightspeedAPIException):
         super(LightspeedAPIRequestError, self).__init__(message)
 
 
-class LightpeedAPI:
+class LightspeedAPI:
     """
     Lightspeed api client
     """
 
-    def __init__(self, auth_token, account_id, log_level=logging.DEBUG):
-        self.ACCOUNT_ID = account_id
-        self.AUTH_TOKEN = auth_token
-        self.URL = constants.BASE_URL.format(ACCOUNT_ID=account_id)
-        self.MAX_RETRIES = constants.MAX_RETRIES
-        self.HEADER = {"Authorization": "Bearer {}".format(self.AUTH_TOKEN)}
+    def __init__(self, auth_token, log_level=logging.DEBUG):
         self.retry_count = 0
 
+        self.MAX_RETRIES = constants.MAX_RETRIES
+        self.AUTH_TOKEN = auth_token
+        self.HEADER = {"Authorization": "Bearer {}".format(self.AUTH_TOKEN)}
+        self.ACCOUNT_ID = self.get_account().get('accountID')
+        self.URL = constants.BASE_URL.format(ACCOUNT_ID=account_id)
+
         logging.basicConfig(level=log_level)
+
+    def get_account(self):
+      return self._get_response(None, constants.ACCOUNT_URL, {}).get('Account')
 
     def _create_request(self, action, url=None, **kwargs):
         datas = {}
