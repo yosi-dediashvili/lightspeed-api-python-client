@@ -481,7 +481,7 @@ class LightspeedAPI:
         :return: Returns all the products
         """
         querystring = {'offset': offset,
-                       'load_relations': '["Images", "Manufacturer", "ItemShops", "Tags"]', 'limit': limit,
+                       'load_relations': '["Images", "Manufacturer", "ItemShops", "Category", "Tags"]', 'limit': limit,
                        'orderby': 'createTime', 'orderby_desc': '1'}
 
         products = self.request(action='item', **querystring)
