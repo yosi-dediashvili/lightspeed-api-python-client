@@ -504,7 +504,7 @@ class LightspeedAPI:
         ]
         querystring = {
           'offset': offset,
-          'load_relations': str(relations),
+          'load_relations': json.dumps(relations),
           'limit': limit,
           'orderby': 'createTime',
           'orderby_desc': '1'
