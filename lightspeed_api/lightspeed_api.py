@@ -480,9 +480,35 @@ class LightspeedAPI:
         """
         :return: Returns all the products
         """
-        querystring = {'offset': offset,
-                       'load_relations': '["Images", "Manufacturer", "ItemShops", "Category", "Tags"]', 'limit': limit,
-                       'orderby': 'createTime', 'orderby_desc': '1'}
+        relations = [
+          "Category",
+          "TaxClass",
+          "Department",
+          "ItemAttributes",
+          "ItemAttributes.ItemAttributeSet",
+          "Manufacturer",
+          "Note",
+          "Season",
+          "Images",
+          "ItemShops",
+          "ItemShelfLocations",
+          "ItemShelfLocations.ShelfLocation",
+          "ItemVendorNums",
+          "ItemComponents",
+          "ItemECommerce",
+          "TagRelations",
+          "TagRelations.Tag",
+          "CustomFieldValues",
+          "CustomFieldValues.value",
+          "ItemPrices"
+        ]
+        querystring = {
+          'offset': offset,
+          'load_relations': str(relations),
+          'limit': limit,
+          'orderby': 'createTime',
+          'orderby_desc': '1'
+        }
 
         products = self.request(action='item', **querystring)
         return products if 'Item' in products else None
