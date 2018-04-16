@@ -524,7 +524,7 @@ class LightspeedAPI:
 
     def fetch_all_customers(self, offset=0, limit=100):
       """
-      :return: Returns all the products
+      :return: Returns all the customers
       """
       relations = [
         "Contact"
@@ -535,5 +535,5 @@ class LightspeedAPI:
         'limit': limit
       }
 
-      customers = self.request(action='item', **querystring)
+      customers = self.request(action='customer', **querystring)
       return customers if 'Customer' in customers else None
