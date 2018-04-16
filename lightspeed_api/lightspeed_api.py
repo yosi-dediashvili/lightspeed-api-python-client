@@ -522,7 +522,7 @@ class LightspeedAPI:
         products = self.request(action='item', **querystring)
         return products if 'Item' in products else None
 
-    def fetch_all_customers(self, offset=0, limit=100, shop_id=None):
+    def fetch_all_customers(self, offset=0, limit=100):
       """
       :return: Returns all the products
       """
@@ -532,9 +532,7 @@ class LightspeedAPI:
       querystring = {
         'offset': offset,
         'load_relations': json.dumps(relations),
-        'limit': limit,
-        'orderby': 'createTime',
-        'orderby_desc': '1'
+        'limit': limit
       }
 
       customers = self.request(action='item', **querystring)
