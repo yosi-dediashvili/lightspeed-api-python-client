@@ -17,5 +17,6 @@ URL_MAP = {
   'manufacturer': 'Manufacturer.json',
   'vendor': 'Vendor.json',
   'item-xml': 'Item',
-  'department': "Department.json"
+  'department': "Department.json",
+  'price_level': "PriceLevel.json"
 }

@@ -416,6 +416,15 @@ class LightspeedAPI:
         products = self.request(action='item', **querystring)
         return products if 'Item' in products else None
 
+    def get_price_levels(self):
+        """
+        Fetch the price level.
+        :return: returns the price levels.
+        """
+        querystring = {}
+        price_levels = self.request(action='price_level', **querystring)
+        return price_levels if 'PriceLevel' in price_levels else None
+
     def get_customers(self, email_id):
         """
         Fetches Customer matching the given email id
@@ -512,3 +521,21 @@ class LightspeedAPI:
 
         products = self.request(action='item', **querystring)
         return products if 'Item' in products else None
+
+    def fetch_all_customers(self, offset=0, limit=100, shop_id=None):
+      """
+      :return: Returns all the products
+      """
+      relations = [
+        "Contact"
+      ]
+      querystring = {
+        'offset': offset,
+        'load_relations': json.dumps(relations),
+        'limit': limit,
+        'orderby': 'createTime',
+        'orderby_desc': '1'
+      }
+
+      customers = self.request(action='item', **querystring)
+      return customers if 'Customer' in customers else None
