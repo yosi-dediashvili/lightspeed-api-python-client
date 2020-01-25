@@ -527,7 +527,8 @@ class LightspeedAPI:
       :return: Returns all the customers
       """
       relations = [
-        "Contact"
+        "Contact",
+        "Tags"
       ]
       querystring = {
         'offset': offset,
