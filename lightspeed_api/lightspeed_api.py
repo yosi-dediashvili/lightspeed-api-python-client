@@ -528,6 +528,7 @@ class LightspeedAPI:
       """
       relations = [
         "Contact",
+        "CustomerType",
         "Tags"
       ]
       querystring = {
