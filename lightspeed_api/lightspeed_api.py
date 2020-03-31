@@ -168,6 +168,9 @@ class LightspeedAPI:
                     action, request_url,
                     kwargs, json_response.get(
                         'message')))
+            raise LightspeedAPIRequestError(
+              "Response contains error data: {!r}".format(json_response)
+            )
         return json_response
 
     def _get_response_post(self, action, request_url, datas, post_json):
