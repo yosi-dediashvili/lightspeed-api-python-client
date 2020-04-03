@@ -87,6 +87,22 @@ class LightspeedAPI:
             raise LightspeedAPIRequestError(e)
         return json_response
 
+    def _handle_error_response(self, action, request_url, json_response, **kwargs):
+        if not json_response:
+            raise LightspeedAPIRequestError("Response contains no data")
+        if json_response.get('errorClass'):
+            logging.warning(
+                "Error response received, "
+                "Action:%s, Request"
+                "Url:%s, kwargs:%s, error:%s" % (
+                    action, request_url,
+                    kwargs, json_response.get(
+                        'message')))
+            raise LightspeedAPIRequestError(
+              "Response contains error data: {!r}".format(json_response)
+            )
+
+
     def _retry_request(self, action, url, request_url, json_response, **kwargs):
         if self.retry_count <= self.MAX_RETRIES:
             self.retry_count += 1
@@ -127,16 +143,9 @@ class LightspeedAPI:
         except LightspeedAPIUnavailable:
             return self._retry_request(
                 action, url, request_url, json_response, **kwargs)
-        if not json_response:
-            raise LightspeedAPIRequestError("Response contains no data")
-        if json_response.get('errorClass'):
-            logging.warning(
-                "Error response received, "
-                "Action:%s, Request"
-                "Url:%s, kwargs:%s, error:%s" % (
-                    action, request_url,
-                    kwargs, json_response.get(
-                        'message')))
+
+        self._handle_error_response(action, request_url, json_response, **kwargs)
+
         return json_response
 
     def post_request(self, action, url=None, post_json=None, **kwargs):
@@ -158,19 +167,8 @@ class LightspeedAPI:
         except LightspeedAPIUnavailable:
             return self._retry_request(
                 action, url, request_url, json_response, **kwargs)
-        if not json_response:
-            raise LightspeedAPIRequestError("Response contains no data")
-        if json_response.get('errorClass'):
-            logging.warning(
-                "Error response received, "
-                "Action:%s, Request"
-                "Url:%s, kwargs:%s, error:%s" % (
-                    action, request_url,
-                    kwargs, json_response.get(
-                        'message')))
-            raise LightspeedAPIRequestError(
-              "Response contains error data: {!r}".format(json_response)
-            )
+
+        self._handle_error_response(action, request_url, json_response, **kwargs)
         return json_response
 
     def _get_response_post(self, action, request_url, datas, post_json):
@@ -308,16 +306,9 @@ class LightspeedAPI:
                 action, request_url, datas, put_json)
         except LightspeedAPIUnavailable:
             pass
-        if not json_response:
-            raise LightspeedAPIRequestError("Response contains no data")
-        if json_response.get('errorClass'):
-            logging.warning(
-                "Error response received, "
-                "Action:%s, Request"
-                "Url:%s, kwargs:%s, error:%s" % (
-                    action, request_url,
-                    kwargs, json_response.get(
-                        'message')))
+
+        self._handle_error_response(action, request_url, json_response, **kwargs)
+
         return json_response
 
     def leaf_categories(self):
