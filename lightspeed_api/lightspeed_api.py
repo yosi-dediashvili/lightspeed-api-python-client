@@ -510,7 +510,8 @@ class LightspeedAPI:
           'load_relations': json.dumps(relations),
           'limit': limit,
           'orderby': 'createTime',
-          'orderby_desc': '1'
+          'orderby_desc': '1',
+          'ItemPrices.price': '>,0'
         }
 
         products = self.request(action='item', **querystring)
